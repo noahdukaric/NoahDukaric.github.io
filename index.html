@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noah Dukaric | Geomatics & Aerodynamics Engineering</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-base: #05070a;
+      --bg-surface: rgba(13, 17, 23, 0.7);
+      --bg-surface-hover: rgba(22, 27, 34, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(0, 113, 227, 0.4);
+      --text-main: #f5f5f7;
+      --text-muted: #86868b;
+      --text-dim: #6e7681;
+      --accent-blue: #0071e3;
+      --accent-cyan: #2997ff;
+      --accent-glow: rgba(41, 151, 255, 0.15);
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient Background - Topographic / Aero Overlay */
+    .bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.28;
+      background-image: 
+        radial-gradient(circle at 80% 15%, rgba(0, 113, 227, 0.18), transparent 40%),
+        radial-gradient(circle at 15% 85%, rgba(41, 151, 255, 0.1), transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%232997ff' stroke-width='0.75' opacity='0.3'%3E%3Cpath d='M-100,200 C150,100 250,350 450,250 C650,150 750,400 950,300'/%3E%3Cpath d='M-100,260 C150,160 250,410 450,310 C650,210 750,460 950,360'/%3E%3Cpath d='M-100,320 C150,220 250,470 450,370 C650,270 750,520 950,420'/%3E%3Cpath d='M-100,380 C150,280 250,530 450,430 C650,330 750,580 950,480'/%3E%3Cpath d='M-100,440 C150,340 250,590 450,490 C650,390 750,640 950,540'/%3E%3Cpath d='M-100,500 C150,400 250,650 450,550 C650,450 750,700 950,600'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: cover;
+    }
+
+    /* Track Layout Outline in Background */
+    .track-watermark {
+      position: fixed;
+      right: -8vw;
+      top: 18vh;
+      width: 48vw;
+      max-width: 650px;
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
+      stroke: var(--accent-cyan);
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    /* Apple-style Glassmorphism Nav */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(5, 7, 10, 0.75);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(0, 113, 227, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(41, 151, 255, 0.3);
+    }
+
+    nav ul {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 400;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--text-main);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 140px 24px 80px;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 40px 0 100px;
+      max-width: 860px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      margin-bottom: 24px;
+      background: rgba(0, 113, 227, 0.1);
+      border: 1px solid rgba(41, 151, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+
+    .hero-badge i {
+      width: 14px;
+      height: 14px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+      margin-bottom: 24px;
+      background: linear-gradient(180deg, #ffffff 30%, #86868b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      max-width: 680px;
+      font-weight: 300;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: #0077ed;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border-subtle);
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Section Typography */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    /* Cards & Bento Grid Layout */
+    .grid {
+      display: grid;
+      gap: 20px;
+      margin-bottom: 90px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-focus);
+      box-shadow: 0 16px 32px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      letter-spacing: -0.015em;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .card-bullets {
+      list-style: none;
+      margin-top: 14px;
+    }
+
+    .card-bullets li {
+      position: relative;
+      padding-left: 18px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .card-bullets li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--accent-cyan);
+    }
+
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-dim);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Precision Specs Bar */
+    .specs-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      padding: 24px;
+      border-radius: 14px;
+      background: rgba(13, 17, 23, 0.4);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 90px;
+    }
+
+    .spec-item h4 {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .spec-item div {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Skills Pill Grid */
+    .skills-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .skill-pill {
+      font-size: 0.85rem;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 40px 24px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      .hero h1 { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-canvas"></div>
+
+  <svg class="track-watermark" viewBox="0 0 100 100">
+    <path d="M 20,20 C 10,40 10,70 30,85 C 50,100 80,85 85,60 C 90,35 70,10 50,15 C 30,20 25,10 20,20 Z" />
+  </svg>
+
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand">
+        Noah Dukaric <span class="brand-tag">UCalgary ENGR</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="#projects">Engineering Projects</a></li>
+          <li><a href="#experience">Field & Industry</a></li>
+          <li><a href="#competencies">Technical Stack</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-badge">
+        <i data-lucide="crosshair"></i> GEOMATICS × AERODYNAMICS × MOTORSPORT
+      </div>
+      <h1>Engineering high-precision spatial and flow systems.</h1>
+      <p>
+        BSc Engineering student at the Schulich School of Engineering, University of Calgary. Merging geodetic precision, flow dynamics, and motorsport telemetry to optimize real-world mechanical and spatial systems.
+      </p>
+      <div class="hero-actions">
+        <a href="mailto:Noah.Dukaric@UCalgary.ca" class="btn-primary">
+          <i data-lucide="mail"></i> Get in Touch
+        </a>
+        <a href="#projects" class="btn-secondary">
+          <i data-lucide="layers"></i> Review Projects
+        </a>
+      </div>
+    </section>
+
+    <section class="specs-strip">
+      <div class="spec-item">
+        <h4>Major / Minor</h4>
+        <div>Geomatics / Aero</div>
+      </div>
+      <div class="spec-item">
+        <h4>Survey Accuracy</h4>
+        <div>1:26,000 Precision</div>
+      </div>
+      <div class="spec-item">
+        <h4>Focus Areas</h4>
+        <div>CFD, Telemetry, GNSS</div>
+      </div>
+      <div class="spec-item">
+        <h4>Location</h4>
+        <div>Calgary, AB, Canada</div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2 class="section-title">Selected Projects</h2>
+      <p class="section-subtitle">Aero-mechanical simulation, high-tolerance surveying, and logistics modeling.</p>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-meta">
+            <span>Motorsport Engineering</span>
+            <span>Mar. 2026</span>
+          </div>
+          <h3>CLA 250 Turbocharger Oil Piping Redesign</h3>
+          <p>
+            Re-engineered high-pressure oil inlet and outlet routing in SolidWorks to optimize thermal endurance and oil delivery under track load.
+          </p>
+          <ul class="card-bullets">
+            <li>Validated flow characteristics and fluid geometry in ANSYS under extreme operational pressures.</li>
+            <li>Eliminated bay clearance bottlenecks, refining fitment around the engine block.</li>
+          </ul>
+          <div class="tag-container">
+            <span class="tag">SolidWorks</span>
+            <span class="tag">ANSYS CFD</span>
+            <span class="tag">Fluid Dynamics</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-meta">
+            <span>Geodetic Surveying</span>
+            <span>Aug. 2026</span>
+          </div>
+          <h3>Field Control, Resection & Topographic Survey</h3>
+          <p>
+            Executed rigorous campus control surveys deploying Trimble total stations and dual-frequency GNSS rovers.
+          </p>
+          <ul class="card-bullets">
+            <li>Calculated angular resection and station adjustment to anchor primary datum point.</li>
+            <li>Completed closed-loop traverse hitting 1:26,000 linear precision (exceeding 1:10,000 spec).</li>
+            <li>Collected high-density terrain feature points to generate complete digital elevation models.</li>
+          </ul>
+          <div class="tag-container">
+            <span class="tag">Trimble M3 DR</span>
+            <span class="tag">GNSS Rovers</span>
+            <span class="tag">Traverse Adjustment</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-meta">
+            <span>Production Logistics</span>
+            <span>Summer 2026</span>
+          </div>
+          <h3>Cargo Vessel Component Routing Analytics</h3>
+          <p>
+            Designed mathematical routing frameworks for heavy structural steel modules within an international manufacturing ecosystem.
+          </p>
+          <ul class="card-bullets">
+            <li>Streamlined production pipelines coordinating across multi-tier fabrication facilities.</li>
+            <li>Integrated spatial logistics to reduce transit interference on shop floors of 500+ personnel.</li>
+          </ul>
+          <div class="tag-container">
+            <span class="tag">Route Analytics</span>
+            <span class="tag">Supply Systems</span>
+            <span class="tag">Workforce Ops</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <h2 class="section-title">Experience & Dynamics</h2>
+      <p class="section-subtitle">Hands-on international operations, track vehicle setup, and leadership.</p>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-meta">
+            <span>Engineering Intern</span>
+            <span>May – Aug 2026</span>
+          </div>
+          <h3>TMT BAU</h3>
+          <p style="color: var(--accent-cyan); font-size: 0.82rem; margin-top: -8px;">Zagreb, Croatia & International</p>
+          <ul class="card-bullets">
+            <li>Coordinated recruitment workflows and technical qualifications across Taiwan, Vietnam, and the Philippines.</li>
+            <li>Managed headquarters spatial layout and cross-timezone mobilization schedules.</li>
+            <li>Executed route mapping for complex large-scale heavy metal components.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-meta">
+            <span>Vehicle Dynamics</span>
+            <span>May – Jul 2025</span>
+          </div>
+          <h3>Sim Racing & Track Days</h3>
+          <p style="color: var(--accent-cyan); font-size: 0.82rem; margin-top: -8px;">Performance Engineering</p>
+          <ul class="card-bullets">
+            <li>Analyzed race lines, telemetry braking markers, and lateral tire slip angles.</li>
+            <li>Tested damper, roll bar, and aero balancing configurations across virtual and closed-course sessions.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-meta">
+            <span>Operations / Leadership</span>
+            <span>2024 – 2026</span>
+          </div>
+          <h3>Operations & Leadership</h3>
+          <p style="color: var(--accent-cyan); font-size: 0.82rem; margin-top: -8px;">Calgary, AB</p>
+          <ul class="card-bullets">
+            <li><strong>VIP Operations (Cowboys Music Fest):</strong> Managed fast-paced logistics for high-volume VIP lounges.</li>
+            <li><strong>Coach (Tennis Alberta):</strong> Structured tactical drills and led seasonal athletic clinics for juniors.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="competencies" style="margin-bottom: 80px;">
+      <h2 class="section-title">Technical Competencies & Honors</h2>
+      <p class="section-subtitle">Tooling, spatial sensors, computation, and institutional awards.</p>
+
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+        <div class="card">
+          <h3 style="display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="cpu" style="color: var(--accent-cyan); width: 20px;"></i>
+            Software & Computation
+          </h3>
+          <div class="skills-cluster">
+            <span class="skill-pill">SolidWorks</span>
+            <span class="skill-pill">ANSYS</span>
+            <span class="skill-pill">Python</span>
+            <span class="skill-pill">C++</span>
+            <span class="skill-pill">MATLAB</span>
+            <span class="skill-pill">Fusion 360</span>
+            <span class="skill-pill">ArcGIS</span>
+            <span class="skill-pill">Google Earth Engine</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="compass" style="color: var(--accent-cyan); width: 20px;"></i>
+            Survey & Geomatics Hardware
+          </h3>
+          <div class="skills-cluster">
+            <span class="skill-pill">Trimble M3 DR</span>
+            <span class="skill-pill">Dual-Freq GNSS Rovers</span>
+            <span class="skill-pill">LiDAR Data Extraction</span>
+            <span class="skill-pill">Leica NA332 Optical Level</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="award" style="color: var(--accent-cyan); width: 20px;"></i>
+            Scholarships & Distinctions
+          </h3>
+          <ul class="card-bullets" style="margin-top: 8px;">
+            <li>E.J. Krakiwsky Bursary</li>
+            <li>TECTERRA Geomatics Bursary</li>
+            <li>Institute of Navigation (Alberta Chapter) Bursary</li>
+            <li>Alexander Rutherford Scholarship</li>
+            <li>Waterloo Pascal Math Contest (Top 25%)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="card" style="text-align: center; padding: 48px 24px; border-color: rgba(41, 151, 255, 0.3);">
+      <h2 style="font-size: 2rem; margin-bottom: 12px; letter-spacing: -0.02em;">Let's build together.</h2>
+      <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 28px;">
+        Seeking engineering internship and co-op opportunities across geomatics, autonomous vehicle positioning, and aero design.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+        <a href="mailto:Noah.Dukaric@UCalgary.ca" class="btn-primary">
+          <i data-lucide="mail"></i> Noah.Dukaric@UCalgary.ca
+        </a>
+        <a href="tel:4033972556" class="btn-secondary">
+          <i data-lucide="phone"></i> (403) 397-2556
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Noah Dukaric • Built for GitHub Pages • Calgary, AB</p>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
