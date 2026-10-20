@@ -866,9 +866,7 @@
   <script>
     lucide.createIcons();
 
-    /* -------------------------------------------------------------
-       1. DYNAMIC COLOR MORPH ON SCROLL (ELECTRIC BLUE -> ROSSO CORSA)
-       ------------------------------------------------------------- */
+
     const ambientGlow = document.getElementById('ambientGlow');
     const topoPaths = document.querySelectorAll('.topo-path');
     const monacoContainer = document.getElementById('monacoContainer');
@@ -879,9 +877,7 @@
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       const scrollFraction = Math.min(Math.max(scrollY / (maxScroll * 0.75), 0), 1);
 
-      // Color interpolation:
-      // Blue: rgb(0, 113, 227) / Cyan: rgb(41, 151, 255)
-      // Red:  rgb(255, 45, 85) / Coral: rgb(255, 69, 58)
+   
       const r = Math.round(0 + (255 - 0) * scrollFraction);
       const g = Math.round(113 + (45 - 113) * scrollFraction);
       const b = Math.round(227 + (85 - 227) * scrollFraction);
@@ -903,7 +899,6 @@
 
       topoPaths.forEach(p => p.setAttribute('stroke', `rgb(${rHigh}, ${gHigh}, ${bHigh})`));
 
-      // Cross-fade tracks: Monaco fades as you reach bottom, Monza powers up
       monacoContainer.style.opacity = Math.max(0.42 - scrollFraction * 0.42, 0);
       monzaContainer.style.opacity = Math.min(scrollFraction * 0.45, 0.45);
     }
@@ -911,11 +906,6 @@
     window.addEventListener('scroll', updateScrollTheme, { passive: true });
     updateScrollTheme();
 
-    /* -------------------------------------------------------------
-       2. CURVATURE-BASED RACING LINE PHYSICS SIMULATOR
-       Calculates true local track curvature so braking and acceleration
-       behave naturally like an actual vehicle without hardcoded pacing.
-       ------------------------------------------------------------- */
     function createTelemetryRunner(trackId, carId, baseSpeed, topSpeed) {
       const track = document.getElementById(trackId);
       const car = document.getElementById(carId);
@@ -969,10 +959,8 @@
       requestAnimationFrame(step);
     }
 
-    // Monaco: tight, technical street circuit (Base 120, Top 380)
     createTelemetryRunner('monacoTrack', 'monacoDot', 120, 390);
 
-    // Monza: ultra high-speed temple of speed (Base 160, Top 520)
     createTelemetryRunner('monzaTrack', 'monzaDot', 160, 520);
   </script>
 </body>
