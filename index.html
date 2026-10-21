@@ -6,7 +6,7 @@
   <title>Noah Dukaric — Geomatics & Aerospace Engineering</title>
   <meta name="description" content="Geomatics Engineering student at the University of Calgary, minor in Aerospace Engineering. Surveying, GNSS, CFD and vehicle performance." />
   <meta name="theme-color" content="#0a0a0b" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0a0b'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23ededee' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%23a594f9'/%3E%3C/svg%3E" />
+  <link rel="icon" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"%3E%3Crect width="32" height="32" rx="7" fill="%230a0a0b"/%3E%3Cg transform="rotate(45 16 16)"%3E%3Cpath d="M16 3C17.2 3 17.6 4.5 17.6 6L17.6 12.5L28 18.5L28 21L17.6 17.8L17.4 23.5L21 26.2L21 28L16 26.6L11 28L11 26.2L14.6 23.5L14.4 17.8L4 21L4 18.5L14.4 12.5L14.4 6C14.4 4.5 14.8 3 16 3Z" fill="%23ededee"/%3E%3C/g%3E%3C/svg%3E' />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,7 +51,6 @@
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
     .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
-    /* Header */
     header {
       position: fixed; top: 0; left: 0; right: 0; z-index: 20;
       padding-top: env(safe-area-inset-top, 0px);
@@ -79,7 +78,6 @@
       padding-left: var(--gutter); padding-right: var(--gutter);
     }
 
-    /* Hero */
     .hero {
       min-height: 100vh;
       padding: 120px 0 72px;
@@ -110,7 +108,6 @@
     .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
     .btn-primary:hover { background: #ffffff; border-color: #ffffff; }
 
-    /* Skyplot */
     .sky { width: 100%; max-width: 480px; justify-self: end; }
     .sky svg { width: 100%; height: auto; display: block; overflow: visible; }
     .sky .ring { fill: none; stroke: var(--line-2); stroke-width: 1; }
@@ -149,7 +146,6 @@
     .pos-line { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 0.8rem; color: var(--muted); margin-top: 14px; }
     .caption { font-size: 0.78rem; color: var(--dim); margin-top: 8px; line-height: 1.5; }
 
-    /* Section layout */
     section.block {
       display: grid; grid-template-columns: 200px minmax(0, 1fr);
       gap: 48px; padding: 104px 0; border-bottom: 1px solid var(--line);
@@ -162,7 +158,6 @@
     .about p { font-size: 1.15rem; line-height: 1.65; letter-spacing: -0.008em; max-width: 36em; }
     .about p + p { margin-top: 22px; font-size: 1.05rem; line-height: 1.7; color: var(--muted); letter-spacing: 0; }
 
-    /* Lap model */
     .lap-intro { color: var(--muted); max-width: 42em; margin-bottom: 40px; }
     .lap-intro strong { color: var(--text); font-weight: 500; }
     .lap-top { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: stretch; }
@@ -243,7 +238,6 @@
     .method a { color: var(--text); text-decoration-color: var(--line-2); text-underline-offset: 3px; }
     .method a:hover { text-decoration-color: var(--accent); }
 
-    /* Projects */
     .project { display: block; }
     .project .figure { margin-bottom: 28px; }
     .p-text { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 8px 48px; align-items: start; }
@@ -267,20 +261,17 @@
     .tools { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 6px; }
     .tools span { font-size: 0.78rem; color: var(--muted); border: 1px solid var(--line-2); border-radius: 999px; padding: 3px 10px; }
 
-    /* Experience */
     .role { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 28px; }
     .role + .role { margin-top: 48px; padding-top: 48px; border-top: 1px solid var(--line); }
     .role-date { color: var(--dim); font-size: 0.875rem; padding-top: 4px; font-variant-numeric: tabular-nums; }
     .role h3 { margin-bottom: 4px; font-size: 1.15rem; }
     .role-sub { color: var(--dim); font-size: 0.88rem; margin-bottom: 16px; }
 
-    /* Skills */
     .skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; }
     .skills h3 { font-size: 1rem; margin-bottom: 12px; }
     .skills ul { list-style: none; border-top: 1px solid var(--line); columns: 2; column-gap: 24px; }
     .skills li { break-inside: avoid; padding: 11px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 0.95rem; }
 
-    /* Contact */
     .contact p { color: var(--muted); max-width: 32em; margin-bottom: 28px; }
     .contact-email {
       display: inline-block; font-size: clamp(1.5rem, 3.6vw, 2.6rem); font-weight: 500; letter-spacing: -0.03em;
@@ -320,14 +311,12 @@
     .terrain-credit { flex-basis: 100%; font-size: 0.75rem; }
     .credit { margin-top: 18px; font-size: 0.75rem; color: var(--dim); }
     .credit a { color: var(--muted); text-underline-offset: 3px; text-decoration-color: var(--line-2); }
-    /* Display face */
     .hero h1, .block-head h2, h3, .contact-email, .brand { font-family: var(--display); }
     .hero h1 { font-weight: 600; letter-spacing: -0.045em; line-height: 0.92; }
     .block-head h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
     h3 { font-weight: 600; letter-spacing: -0.02em; }
     .contact-email { font-weight: 500; letter-spacing: -0.02em; }
 
-    /* Subtle background: a faint survey grid that fades out, plus a soft light at the top */
     html { background: var(--bg); }
     body { background: transparent; position: relative; }
     body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -1; }
@@ -468,7 +457,6 @@
         <p class="credit">Track data: <a href="https://github.com/bacinger/f1-circuits" target="_blank" rel="noopener">bacinger/f1-circuits</a> (MIT)</p>
       </div>
     </section>
-
 
     <section id="projects" class="block">
       <div class="block-head"><div>
@@ -652,7 +640,6 @@
       return n;
     }
 
-    /* ---------- Image fallback ---------- */
     document.querySelectorAll('.figure img').forEach(img => {
       img.addEventListener('error', () => {
         const fig = img.parentElement;
@@ -661,7 +648,6 @@
       });
     });
 
-    /* ---------- Active nav link ---------- */
     (function () {
       const links = [...document.querySelectorAll('nav a')];
       const io = new IntersectionObserver(entries => {
@@ -673,8 +659,6 @@
       document.querySelectorAll('section[id]').forEach(s => io.observe(s));
     })();
 
-    /* ---------- GNSS skyplot: live orbits over Calgary ---------- */
-    // Two-body + J2 secular propagation of CelesTrak GP (OMM) mean elements, and look angles from a ground station.
     const D2R = Math.PI / 180, MU = 398600.4418, RE = 6378.137, J2 = 1.08262668e-3, WGS_F = 1 / 298.257223563, WGS_E2 = WGS_F * (2 - WGS_F);
     function makeObserver(latDeg, lonDeg, hKm) {
       const la = latDeg * D2R, lo = lonDeg * D2R, N = RE / Math.sqrt(1 - WGS_E2 * Math.sin(la) ** 2);
@@ -786,7 +770,6 @@
         s.node.classList.toggle('used', s.el >= MASK);
       }
 
-      /* ---- live orbits ---- */
       const GROUPS = [['gps-ops', 'G'], ['galileo', 'E'], ['glo-ops', 'R']];
       const KEEP = ['OBJECT_NAME', 'EPOCH', 'MEAN_MOTION', 'ECCENTRICITY', 'INCLINATION', 'RA_OF_ASC_NODE', 'ARG_OF_PERICENTER', 'MEAN_ANOMALY'];
       async function loadGroup(g) {
@@ -794,7 +777,6 @@
         let cached = null;
         try { cached = JSON.parse(localStorage.getItem(key)); } catch (e) {}
         if (cached && Date.now() - cached.t < 6 * 3600e3) return cached.d;
-        // a copy in the site itself first (see update-gnss.yml), then CelesTrak directly
         for (const url of [`gnss/${g}.json`, `https://celestrak.org/NORAD/elements/gp.php?GROUP=${g}&FORMAT=json`]) {
           try {
             const r = await fetch(url, { cache: 'no-cache' });
@@ -806,7 +788,6 @@
             return d;
           } catch (e) {}
         }
-        // orbit elements stay usable for a few days at skyplot accuracy
         if (cached && Date.now() - cached.t < 5 * 86400e3) return cached.d;
         return null;
       }
@@ -850,7 +831,6 @@
             s.title.textContent = `${s.p.name}\nAzimuth ${s.az.toFixed(0)}°, elevation ${s.el.toFixed(0)}°`;
           });
           dop(sats);
-          // label the highest satellites, skipping any whose label would collide with one already placed
           const boxes = [], dots = sats.filter(s => s.el > 0).map(s => proj(s.az, s.el));
           const hit = (r, q) => r.x < q.x + q.w && q.x < r.x + r.w && r.y < q.y + q.h && q.y < r.y + r.h;
           let k = 0;
@@ -874,7 +854,6 @@
           const d = new Date(now);
           $('gPos').textContent = `${OBS_LAT.toFixed(4)}° N, ${Math.abs(OBS_LON).toFixed(4)}° W at ${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')} UTC`;
         }
-        // simulation clock: real time, or 600x (10 minutes per second) in time-lapse
         let rate = 1, simOffset = 0, lastReal = Date.now(), lastTrail = -Infinity, lastFrame = -Infinity;
         function frame() {
           const real = Date.now();
@@ -902,7 +881,6 @@
         return true;
       }
 
-      /* ---- fallback: simulated passes ---- */
       function startSimulated() {
         const sats = [];
         let now = performance.now() / 1000;
@@ -932,9 +910,6 @@
         .catch(startSimulated);
     })();
 
-
-    /* ---------- Background: contour lines around Bednja, Croatia ---------- */
-    // Marching squares: returns {minor: Float32Array, index: Float32Array} of line segments (x1,y1,x2,y2) in grid units
     function contourSegments(z, w, h, step, indexEvery) {
       const minor = [], index = [];
       let lo = Infinity, hi = -Infinity;
@@ -989,7 +964,6 @@
         const px = g.getImageData(0, 0, G, G).data;
         let z = new Float32Array(G * G);
         for (let i = 0; i < G * G; i++) z[i] = px[i * 4] * 256 + px[i * 4 + 1] + px[i * 4 + 2] / 256 - 32768;
-        // light smoothing so lines read as clean contours rather than pixel noise
         for (let pass = 0; pass < 2; pass++) {
           const o = new Float32Array(G * G);
           for (let y = 0; y < G; y++) for (let x = 0; x < G; x++) {
@@ -1002,7 +976,7 @@
           }
           z = o;
         }
-        return contourSegments(z, G, G, 20, 5);   // 20 m interval, every 100 m emphasised
+        return contourSegments(z, G, G, 20, 5);
       }
 
       function draw(seg) {
@@ -1011,10 +985,10 @@
         canvas.width = W * dpr; canvas.height = H * dpr;
         const ctx = canvas.getContext('2d');
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const sc = Math.max(W, H) / G * 1.05;                 // cover the screen
-        // keep Bednja near the upper middle of the screen
+        const sc = Math.max(W, H) / G * 1.25;
         const bx = (xt - tx0) * S, by = (yt - ty0) * S;
-        const ox = W * 0.6 - bx * sc, oy = H * 0.3 - by * sc;
+        const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+        const ox = clamp(W * 0.6 - bx * sc, W - G * sc, 0), oy = clamp(H * 0.3 - by * sc, H - G * sc, 0);
         const stroke = (arr, alpha, width) => {
           ctx.beginPath();
           for (let i = 0; i < arr.length; i += 4) {
@@ -1034,18 +1008,16 @@
         canvas.classList.add('ready');
         let tm;
         window.addEventListener('resize', () => { clearTimeout(tm); tm = setTimeout(() => draw(seg), 200); });
-      }).catch(() => {});   // if the tiles can't load, the page simply keeps a plain background
+      }).catch(() => {});
       if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
     })();
 
-    /* ---------- Monaco lap model ---------- */
     (function lap() {
       const D = JSON.parse($('lapData').textContent);
       const N = D.s.length, W = D.w, H = D.h;
-      const X = D.x, Y = D.y.map(y => H - y);           // north up
+      const X = D.x, Y = D.y.map(y => H - y);
       const CX = D.cx, CY = D.cy.map(y => H - y);
 
-      /* map */
       const map = $('map');
       map.setAttribute('viewBox', `0 0 ${W} ${H}`);
       const road = 'M' + CX.map((x, i) => x + ',' + CY[i]).join('L') + 'Z';
@@ -1060,13 +1032,10 @@
       }
       el('path', { class: 'brake-zone', d: bz }, map);
 
-      // start line, perpendicular to direction of travel
       { const dx = X[1] - X[0], dy = Y[1] - Y[0], l = Math.hypot(dx, dy), nx = -dy / l * 9, ny = dx / l * 9;
         el('line', { class: 'start', x1: X[0] - nx, y1: Y[0] - ny, x2: X[0] + nx, y2: Y[0] + ny }, map); }
 
-      // corner labels, placed on the outside of the lap
       const idxAt = s => { let lo = 0, hi = N - 1; while (lo < hi) { const m = (lo + hi + 1) >> 1; if (D.s[m] <= s) lo = m; else hi = m - 1; } return lo; };
-      // [dx, dy, anchor] from the corner, in metres (y down)
       const place = {
         'Sainte Dévote': [-8, -26, 'start'], 'Casino': [-26, 8, 'end'], 'Hairpin': [-26, 14, 'end'],
         'Portier': [22, 10, 'start'], 'Chicane': [10, 44, 'middle'], 'Tabac': [18, 40, 'start'],
@@ -1077,7 +1046,6 @@
         el('text', { class: 'corner', x: X[i] + dx, y: Y[i] + dy, 'text-anchor': anchor }, map).textContent = c.name;
       });
 
-      // north arrow and 100 m scale bar (map units are metres)
       const ui = el('g', { transform: 'translate(40 60)' }, map);
       el('path', { class: 'map-ui-line', d: 'M0,26 L0,-18 M-6,-8 L0,-18 L6,-8' }, ui);
       el('text', { class: 'map-ui', x: 0, y: -28, 'text-anchor': 'middle' }, ui).textContent = 'N';
@@ -1086,12 +1054,10 @@
 
       const ring = el('circle', { class: 'car-ring', r: 16 }, map);
       const car = el('circle', { class: 'car', r: 7 }, map);
-      // fit the view to everything drawn, labels included
       { const bb = map.getBBox(), p = 14;
         map.setAttribute('viewBox', `${bb.x - p} ${bb.y - p} ${bb.width + 2 * p} ${bb.height + 2 * p}`); }
 
-      /* friction circle */
-      const gg = $('gg'), GS = 15;                      // px per g
+      const gg = $('gg'), GS = 15;
       [2, 4, 6].forEach(r => el('circle', { class: 'ring', r: r * GS }, gg));
       el('line', { class: 'axis', x1: -100, x2: 100, y1: 0, y2: 0 }, gg);
       el('line', { class: 'axis', y1: -100, y2: 100, x1: 0, x2: 0 }, gg);
@@ -1104,7 +1070,6 @@
       const fmt = t => { const m = Math.floor(t / 60); return m + ':' + (t - m * 60).toFixed(3).padStart(6, '0'); };
       $('mTime').textContent = fmt(D.lap);
 
-      /* chart */
       const holder = $('chart');
       const TOTAL = D.s[N - 1] + (D.s[N - 1] - D.s[N - 2]);
       let chart = null;
@@ -1124,7 +1089,6 @@
           el('line', { class: 'grid', x1: pl, x2: Wp - pr, y1: ys(v), y2: ys(v) }, svg);
           el('text', { class: 'tick', x: pl - 8, y: ys(v) + 3.5, 'text-anchor': 'end' }, svg).textContent = v;
         });
-        // named corners
         const named = D.corners.filter(c => c.name);
         let lastX = -999;
         named.forEach(c => {
@@ -1135,12 +1099,10 @@
             lastX = x;
           }
         });
-        // speed trace
         let d = '';
         for (let i = 0; i < N; i++) d += (i ? 'L' : 'M') + xs(D.s[i]).toFixed(1) + ',' + ys(D.v[i]).toFixed(1);
         el('path', { class: 'area', d: d + `L${xs(D.s[N - 1])},${ys(0)}L${xs(0)},${ys(0)}Z` }, svg);
         el('path', { class: 'speed', d }, svg);
-        // throttle and brake strips
         el('rect', { class: 'strip-bg', x: pl, y: sy, width: Wp - pl - pr, height: rowH }, svg);
         el('rect', { class: 'strip-bg', x: pl, y: sy + rowH + 6, width: Wp - pl - pr, height: rowH }, svg);
         el('text', { class: 'tick', x: pl - 8, y: sy + 8, 'text-anchor': 'end' }, svg).textContent = 'Throttle';
@@ -1159,7 +1121,6 @@
         };
         runs(i => D.ax[i] > 0.12, sy, 'thr');
         runs(i => D.ax[i] < -0.4, sy + rowH + 6, 'brk');
-        // distance axis
         for (let m = 0; m <= TOTAL; m += 500) {
           el('text', { class: 'tick', x: xs(m), y: Hp - 4, 'text-anchor': m === 0 ? 'start' : 'middle' }, svg).textContent = m === 0 ? '0 m' : m;
         }
@@ -1170,7 +1131,6 @@
       drawChart();
       new ResizeObserver(() => { if (Math.abs(holder.clientWidth - (chart ? chart.Wp : 0)) > 4) { drawChart(); show(idx, frac); } }).observe(holder);
 
-      /* playback */
       let idx = 0, frac = 0, T = 0, rate = 1, lastMs = null, scrubbing = false, visible = false, lastRead = 0;
       function show(i, f) {
         const j = (i + 1) % N;
@@ -1209,7 +1169,6 @@
         requestAnimationFrame(step);
       }
 
-      // scrub on hover / touch
       holder.addEventListener('pointermove', e => {
         if (!chart) return;
         const r = holder.getBoundingClientRect();
