@@ -1,5 +1,5 @@
-# Put this file at .github/workflows/update-gnss.yml in your noahdukaric.github.io repo.
-# Every 6 hours it downloads current GPS, Galileo and GLONASS orbit data from CelesTrak
+
+# Every 6 hours downloads current GPS, Galileo and GLONASS orbit data from CelesTrak
 # into a gnss/ folder, which the skyplot on the homepage reads first.
 name: Update GNSS orbit data
 
